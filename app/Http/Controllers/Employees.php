@@ -9,17 +9,6 @@ use App\Http\Controllers\Controller;
 
 class Employees extends Controller {
 
-    public function teste(Array $request) {
-        $x = $_GET;
-        $a = '1';
-        return 'epa';
-    }
-
-    public function teste2(Array $request) {
-        $a = '2';
-        return 'uhhu';
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +16,7 @@ class Employees extends Controller {
      */
     public function index() {
         try {
-            return Employee::getEmployee();
+            return Employee::all();
         } catch (\Exception $e) {
             return 'Erro';
         }
@@ -39,15 +28,15 @@ class Employees extends Controller {
      * @param  Request  $request
      * @return Response
      */
-    public function store(Array $request) {
+    public function store(Request $request) {
         try {
             $this->beginTransaction();
             $employee = new Employee;
 
-            $employee->name = $request['name'];
-            $employee->email = $request['email'];
-            $employee->contact_number = $request['contact_number'];
-            $employee->position = $request['position'];
+            $employee->name = $request->name;
+            $employee->email = $request->email;
+            $employee->contact_number = $request->contact_number;
+            $employee->position = $request->position;
             $employee->save();
             
             $this->commit();
@@ -76,13 +65,13 @@ class Employees extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update(Array $request) {
+    public function update(Request $request, int  $id) {
         $employee = Employee::find($id);
 
-        $employee->name = $request->input('name');
-        $employee->email = $request->input('email');
-        $employee->contact_number = $request->input('contact_number');
-        $employee->position = $request->input('position');
+        $employee->name = $request->name;
+        $employee->email = $request->email;
+        $employee->contact_number = $request->contact_number;
+        $employee->position = $request->position;
         $employee->save();
 
         return "Sucess updating user #" . $employee->id;
@@ -94,12 +83,12 @@ class Employees extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function destroy(Request $request) {
-        $employee = Employee::find($request->input('id'));
+    public function destroy(int  $id) {
+        $employee = Employee::find($id);
 
         $employee->delete();
 
-        return "Employee record successfully deleted #" . $request->input('id');
+        return "Employee record successfully deleted #" . $id;
     }
 
 }

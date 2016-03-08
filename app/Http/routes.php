@@ -26,16 +26,15 @@ Route::get('/', function () {
   |
  */
 
-Route::group(['middleware' => ['web']], function () {
-    Route::get('{resource}/{method}', function($resource, $method) {       
-        $app = app();
-        $controller = $app->make('\App\Http\Controllers\\' . $resource);
-        return $controller->$method(Input::all());
-    });
+Route::group(['prefix'=>'employees'], function() {
 
-    Route::post('{resource}/{method}', function($resource, $method) {
-        $app = app();
-        $controller = $app->make('\App\Http\Controllers\\' . $resource);
-        return $controller->$method(Input::all());
-    });
+    Route::get('index', 'Employees@index');
+
+    Route::post('store', 'Employees@store');
+
+    Route::post('delete/{id}', 'Employees@destroy');
+
+    Route::post('edit/{id}', 'Employees@show');
+
+    Route::post('update/{id}', 'Employees@update');
 });
